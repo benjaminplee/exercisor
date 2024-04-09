@@ -28,7 +28,12 @@
             <input type="reset" value="Reset" id="reset" onclick="event.preventDefault()" />
 
             <label for="text">Cues</label>
-            <textarea id="text" name="text" placeholder="Exercises" rows="20"></textarea>
+            <textarea id="text" name="text" placeholder="Exercises" rows="10"></textarea>
+            <p>
+                Each line of text is a separate cue which are read out loud one by one on each press of <kbd>Next</kbd>. <kbd>Reset</kbd> will go back to the start. 
+                Text entered will be automatically saved to local storage (in browser) and reloaded when the page loads. Any changes to the text will cause <kbd>Reset</kbd> to be pressed.
+                <i>To ensure the last cue is caught, make sure to press enter after your last line of text.</i>
+            </p>
         </form>
       </section>
 
