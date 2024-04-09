@@ -38,6 +38,7 @@
         // Document variable to store lines of text
         var textLines = [];
         var pointer = -1;
+        var synth = window.speechSynthesis;
 
         function setcues() {
             document.getElementById('nowcue').innerHTML = "<strong>Now</strong>: " + (pointer == -1 ? "START" : textLines[pointer])
@@ -71,10 +72,15 @@
         // Define behavior for "next" button click (placeholder)
         document.getElementById('next').addEventListener('click', function() {
             pointer++;
+
             if (pointer == textLines.length - 1) {
                 processTextContent();
             }
-            setcues();
+            else {
+                setcues();
+                var utterance = new SpeechSynthesisUtterance(textLines[pointer]);
+                synth.speak(utterance);
+            }
         });
 
         // Reset text area, clear local storage, and reset document variables on "reset" button click
