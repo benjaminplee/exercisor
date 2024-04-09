@@ -1,1 +1,87 @@
-foo
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Exercisor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.classless.min.css"
+    />
+  </head>
+
+  <body>
+    <header>
+      <hgroup>
+        <h1>Exercisor</h1>
+        <p>Audio cues for stretching.</p>
+      </hgroup>
+    </header>
+
+    <main>
+      <section id="form">
+        <form>
+            <small id="nowcue">Now: xyz</small>
+            <input type="submit" value="Next" id="next" onclick="event.preventDefault()" />
+            <small id="nextcue">Now: xyz</small>
+            <input type="reset" value="Reset" id="reset" onclick="event.preventDefault()" />
+
+            <label for="text">Cues</label>
+            <textarea id="text" name="text" placeholder="Exercises" rows="20"></textarea>
+        </form>
+      </section>
+
+    </main>
+
+    <script>
+        // Document variable to store lines of text
+        var textLines = [];
+        var pointer = -1;
+
+        function setcues() {
+            document.getElementById('nowcue').innerHTML = "<strong>Now</strong>: " + (pointer == -1 ? "START" : textLines[pointer])
+            document.getElementById('nextcue').innerHTML = "<strong>Next:</strong> " + (pointer + 1 == textLines.length - 1 ? "DONE" : textLines[pointer + 1])
+        }
+
+        // Function to process text area content and update the array
+        function processTextContent() {
+            var textContent = document.getElementById('text').value;
+            textLines = textContent.split('\n');
+            pointer = -1; // Reset pointer to zero
+            setcues();
+
+        }
+
+        // Load saved text from local storage and process content
+        document.addEventListener('DOMContentLoaded', function() {
+            var savedText = localStorage.getItem('text');
+            if (savedText) {
+                document.getElementById('text').value = savedText;
+                processTextContent(); // Process loaded text
+            }
+        });
+
+        // Save text to local storage on input and process content
+        document.getElementById('text').addEventListener('input', function() {
+            localStorage.setItem('text', this.value);
+            processTextContent(); // Process new input
+        });
+
+        // Define behavior for "next" button click (placeholder)
+        document.getElementById('next').addEventListener('click', function() {
+            pointer++;
+            if (pointer == textLines.length - 1) {
+                processTextContent();
+            }
+            setcues();
+        });
+
+        // Reset text area, clear local storage, and reset document variables on "reset" button click
+        document.getElementById('reset').addEventListener('click', function() {
+            processTextContent(); // Process loaded text
+        });
+    </script>
+
+  </body>
+</html>
