@@ -22,9 +22,9 @@
     <main>
       <section id="form">
         <form>
-            <small id="nowcue">Now: xyz</small>
+            <small><b>Now: </b><span id="nowcue">ADD CUES BELOW</span></small>
             <input type="submit" value="Next" id="next" onclick="event.preventDefault()" />
-            <small id="nextcue">Now: xyz</small>
+            <small><b>Next: </b><span id="nextcue">ADD MORE CUES</span></small>
             <input type="reset" value="Reset" id="reset" onclick="event.preventDefault()" />
 
             <label for="text">Cues</label>
@@ -46,8 +46,8 @@
         var synth = window.speechSynthesis;
 
         function setcues() {
-            document.getElementById('nowcue').innerHTML = "<strong>Now</strong>: " + (pointer == -1 ? "START" : textLines[pointer])
-            document.getElementById('nextcue').innerHTML = "<strong>Next:</strong> " + (pointer + 1 == textLines.length - 1 ? "DONE" : textLines[pointer + 1])
+            document.getElementById('nowcue').innerHTML = (pointer == -1 ? "PRESS NEXT TO START" : textLines[pointer])
+            document.getElementById('nextcue').innerHTML = (pointer + 1 == textLines.length - 1 ? "DONE" : textLines[pointer + 1])
         }
 
         // Function to process text area content and update the array
@@ -76,15 +76,17 @@
 
         // Define behavior for "next" button click (placeholder)
         document.getElementById('next').addEventListener('click', function() {
-            pointer++;
+            if (textLines.length > 0) {
+                pointer++;
 
-            if (pointer == textLines.length - 1) {
-                processTextContent();
-            }
-            else {
-                setcues();
-                var utterance = new SpeechSynthesisUtterance(textLines[pointer]);
-                synth.speak(utterance);
+                if (pointer == textLines.length - 1) {
+                    processTextContent();
+                }
+                else {
+                    setcues();
+                    var utterance = new SpeechSynthesisUtterance(textLines[pointer]);
+                    synth.speak(utterance);
+                }
             }
         });
 
